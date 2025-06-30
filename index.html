@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python Beginner Interface</title>
+    <title>Python Learning Assistant</title>
     <style>
         * {
             margin: 0;
@@ -22,148 +22,143 @@
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: white;
             border-radius: 20px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
             width: 100%;
             max-width: 800px;
-            padding: 40px;
-            animation: fadeIn 0.8s ease-out;
+            min-height: 600px;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        h1 {
+        .header {
             text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
             color: #2c3e50;
             font-size: 2.5em;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-            position: relative;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #3498db, #8e44ad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        h1::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            border-radius: 2px;
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1em;
         }
 
-        .search-container {
-            position: relative;
+        .question-section {
             margin-bottom: 30px;
         }
 
-        .search-box {
+        .question-section label {
+            display: block;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+
+        .question-input-container {
+            position: relative;
+        }
+
+        #questionInput {
             width: 100%;
-            padding: 15px 20px;
-            font-size: 16px;
-            border: 2px solid #e0e0e0;
+            padding: 16px 20px;
+            border: 2px solid #e0e6ed;
             border-radius: 12px;
-            outline: none;
+            font-size: 16px;
+            font-family: inherit;
             transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.9);
+            background: #f8f9fa;
         }
 
-        .search-box:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            transform: translateY(-2px);
+        #questionInput:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            background: white;
         }
 
-        .predictions {
+        #questionInput::placeholder {
+            color: #a0a0a0;
+        }
+
+        .suggestions {
             position: absolute;
             top: 100%;
             left: 0;
             right: 0;
             background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 12px;
+            border: 1px solid #e0e6ed;
+            border-top: none;
+            border-radius: 0 0 12px 12px;
             max-height: 200px;
             overflow-y: auto;
             z-index: 1000;
             display: none;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
 
-        .prediction-item {
+        .suggestion-item {
             padding: 12px 20px;
             cursor: pointer;
+            border-bottom: 1px solid #f1f2f6;
             transition: background-color 0.2s ease;
-            border-bottom: 1px solid #f0f0f0;
         }
 
-        .prediction-item:hover {
+        .suggestion-item:hover {
             background-color: #f8f9fa;
         }
 
-        .prediction-item:last-child {
+        .suggestion-item:last-child {
             border-bottom: none;
         }
 
-        .answer-container {
-            position: relative;
+        .answer-section {
+            margin-top: 30px;
         }
 
-        .answer-area {
-            width: 100%;
-            min-height: 300px;
-            padding: 20px;
-            font-size: 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            outline: none;
-            resize: vertical;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            background: rgba(255, 255, 255, 0.9);
+        .answer-section label {
+            display: block;
             color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 12px;
+            font-size: 1.1em;
         }
 
-        .answer-area:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        #answerArea {
+            width: 100%;
+            min-height: 200px;
+            padding: 20px;
+            border: 2px solid #e0e6ed;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+            background: #f8f9fa;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        #answerArea:focus {
+            outline: none;
+            border-color: #27ae60;
+            box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+            background: white;
         }
 
         .loading {
             display: none;
             text-align: center;
-            margin: 20px 0;
-            color: #667eea;
-            font-weight: 500;
-        }
-
-        .loading::after {
-            content: '';
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #667eea;
-            border-radius: 50%;
-            border-top-color: transparent;
-            animation: spin 1s linear infinite;
-            margin-left: 10px;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+            color: #7f8c8d;
+            font-style: italic;
+            margin-top: 10px;
         }
 
         .python-icon {
@@ -178,7 +173,7 @@
                 margin: 10px;
             }
             
-            h1 {
+            .header h1 {
                 font-size: 2em;
             }
         }
@@ -186,134 +181,128 @@
 </head>
 <body>
     <div class="container">
-        <h1><span class="python-icon">🐍</span>Python</h1>
-        
-        <div class="search-container">
-            <input type="text" class="search-box" placeholder="Ask me anything about Python..." id="searchInput">
-            <div class="predictions" id="predictions"></div>
+        <div class="header">
+            <h1><span class="python-icon">🐍</span>Python</h1>
+            <p>Your friendly Python learning assistant</p>
         </div>
-        
-        <div class="loading" id="loading">Thinking...</div>
-        
-        <div class="answer-container">
-            <textarea class="answer-area" placeholder="Your answer will appear here..." readonly id="answerArea"></textarea>
+
+        <div class="question-section">
+            <label for="questionInput">Ask me anything about Python:</label>
+            <div class="question-input-container">
+                <input 
+                    type="text" 
+                    id="questionInput" 
+                    placeholder="e.g., How do I create a list in Python?"
+                    autocomplete="off"
+                >
+                <div class="suggestions" id="suggestions"></div>
+            </div>
+        </div>
+
+        <div class="answer-section">
+            <label for="answerArea">Answer:</label>
+            <textarea 
+                id="answerArea" 
+                placeholder="Your Python answer will appear here..."
+                readonly
+            ></textarea>
+            <div class="loading" id="loading">Processing your question...</div>
         </div>
     </div>
 
     <script>
-        const searchInput = document.getElementById('searchInput');
-        const predictions = document.getElementById('predictions');
+        const questionInput = document.getElementById('questionInput');
+        const suggestions = document.getElementById('suggestions');
         const answerArea = document.getElementById('answerArea');
         const loading = document.getElementById('loading');
 
-        // Sample Python-related questions for predictions
-        const pythonQuestions = [
-            "What is Python?",
-            "How to install Python?",
-            "Python variables and data types",
-            "Python loops - for and while",
-            "Python functions and modules",
-            "Python lists and dictionaries",
-            "Python if-else statements",
-            "Python string methods",
-            "Python file handling",
-            "Python error handling",
-            "Python classes and objects",
-            "Python libraries and packages",
-            "Python input and output",
-            "Python operators",
-            "Python debugging tips",
-            "Python best practices",
-            "Python vs other languages",
-            "Python career opportunities",
-            "Python project ideas",
-            "Python coding exercises"
+        // Sample Python-related suggestions for beginners
+        const pythonSuggestions = [
+            "How do I create a list in Python?",
+            "What is a function in Python?",
+            "How do I use if statements?",
+            "What are Python data types?",
+            "How do I create a for loop?",
+            "What is the difference between list and tuple?",
+            "How do I handle errors in Python?",
+            "What are Python dictionaries?",
+            "How do I read a file in Python?",
+            "What is object-oriented programming?",
+            "How do I install Python packages?",
+            "What are Python modules?",
+            "How do I work with strings?",
+            "What is the difference between print and return?",
+            "How do I create a class in Python?"
         ];
 
-        // Sample answers for common questions
-        const answers = {
-            "What is Python?": "Python is a high-level, interpreted programming language known for its simple syntax and readability. It was created by Guido van Rossum and first released in 1991. Python is versatile and used for web development, data analysis, artificial intelligence, scientific computing, and more. Its philosophy emphasizes code readability with significant whitespace.",
+        // Show suggestions as user types
+        questionInput.addEventListener('input', function() {
+            const value = this.value.toLowerCase();
             
-            "How to install Python?": "To install Python:\n1. Visit python.org\n2. Download the latest version for your operating system\n3. Run the installer\n4. Make sure to check 'Add Python to PATH' during installation\n5. Verify installation by opening command prompt/terminal and typing 'python --version'\n\nAlternatively, you can use package managers like Homebrew (Mac) or apt (Linux).",
-            
-            "Python variables and data types": "Python has several built-in data types:\n• int: whole numbers (e.g., 42)\n• float: decimal numbers (e.g., 3.14)\n• str: text (e.g., 'Hello')\n• bool: True/False\n• list: ordered collection [1, 2, 3]\n• dict: key-value pairs {'name': 'John'}\n• tuple: immutable sequence (1, 2, 3)\n\nVariables are created by assignment: name = 'Python'",
-            
-            "Python loops - for and while": "Python has two main loop types:\n\nFor loops:\nfor i in range(5):\n    print(i)\n\nfor item in ['a', 'b', 'c']:\n    print(item)\n\nWhile loops:\ncount = 0\nwhile count < 5:\n    print(count)\n    count += 1\n\nUse 'break' to exit loops early and 'continue' to skip iterations.",
-            
-            "Python functions and modules": "Functions are reusable blocks of code:\n\ndef greet(name):\n    return f'Hello, {name}!'\n\nresult = greet('World')\n\nModules are files containing Python code:\n# math_utils.py\ndef add(a, b):\n    return a + b\n\n# main.py\nimport math_utils\nresult = math_utils.add(5, 3)"
-        };
-
-        // Show predictions as user types
-        searchInput.addEventListener('input', function() {
-            const query = this.value.toLowerCase().trim();
-            
-            if (query.length === 0) {
-                predictions.style.display = 'none';
+            if (value.length < 2) {
+                suggestions.style.display = 'none';
                 return;
             }
 
-            const filteredQuestions = pythonQuestions.filter(question => 
-                question.toLowerCase().includes(query)
+            const filteredSuggestions = pythonSuggestions.filter(suggestion => 
+                suggestion.toLowerCase().includes(value)
             );
 
-            if (filteredQuestions.length > 0) {
-                predictions.innerHTML = filteredQuestions
-                    .slice(0, 5)
-                    .map(question => `<div class="prediction-item">${question}</div>`)
+            if (filteredSuggestions.length > 0) {
+                suggestions.innerHTML = filteredSuggestions
+                    .slice(0, 5) // Show max 5 suggestions
+                    .map(suggestion => `<div class="suggestion-item">${suggestion}</div>`)
                     .join('');
-                predictions.style.display = 'block';
+                suggestions.style.display = 'block';
             } else {
-                predictions.style.display = 'none';
+                suggestions.style.display = 'none';
             }
         });
 
-        // Handle prediction clicks
-        predictions.addEventListener('click', function(e) {
-            if (e.target.classList.contains('prediction-item')) {
-                const selectedQuestion = e.target.textContent;
-                searchInput.value = selectedQuestion;
-                predictions.style.display = 'none';
-                showAnswer(selectedQuestion);
+        // Handle suggestion clicks
+        suggestions.addEventListener('click', function(e) {
+            if (e.target.classList.contains('suggestion-item')) {
+                questionInput.value = e.target.textContent;
+                suggestions.style.display = 'none';
+                questionInput.focus();
             }
         });
 
-        // Handle Enter key
-        searchInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                predictions.style.display = 'none';
-                showAnswer(this.value);
-            }
-        });
-
-        // Hide predictions when clicking outside
+        // Hide suggestions when clicking outside
         document.addEventListener('click', function(e) {
-            if (!e.target.closest('.search-container')) {
-                predictions.style.display = 'none';
+            if (!e.target.closest('.question-input-container')) {
+                suggestions.style.display = 'none';
             }
         });
 
-        // Show answer function
-        function showAnswer(question) {
-            if (!question.trim()) return;
+        // Handle Enter key press
+        questionInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                suggestions.style.display = 'none';
+                // Here you would typically send the question to your n8n workflow
+                // For now, we'll just show a placeholder
+                simulateAnswer();
+            }
+        });
+
+        // Simulate answer loading (replace this with your n8n workflow integration)
+        function simulateAnswer() {
+            const question = questionInput.value.trim();
+            if (!question) return;
 
             loading.style.display = 'block';
             answerArea.value = '';
 
-            // Simulate thinking time
+            // Simulate API call delay
             setTimeout(() => {
                 loading.style.display = 'none';
-                
-                const answer = answers[question] || 
-                    `Great question about "${question}"!\n\nThis is a common Python topic that beginners often ask about. Here are some key points to get you started:\n\n• Python is designed to be easy to learn and read\n• Practice with small examples first\n• Use the official Python documentation at docs.python.org\n• Try coding exercises on platforms like Python.org's tutorial\n• Join Python communities for help and discussion\n\nFor more specific information about "${question}", I'd recommend checking the official Python documentation or trying some hands-on coding examples!`;
-                
-                answerArea.value = answer;
-                answerArea.focus();
+                answerArea.value = `Question: ${question}\n\nAnswer will be provided by your n8n workflow integration.\n\nTo connect this interface to n8n:\n1. Set up an HTTP webhook in n8n\n2. Send POST request with the question\n3. Display the response in this text area`;
             }, 1000);
         }
 
-        // Add some entrance animation
+        // Add some interactivity on load
         window.addEventListener('load', function() {
-            searchInput.focus();
+            questionInput.focus();
         });
     </script>
 </body>
